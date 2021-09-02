@@ -44,3 +44,32 @@ console.log(olegas, maram);
 
 // An object created from a constructor is called an instance (in JS)
 console.log(olegas instanceof Person);
+
+// Prototypes
+console.log('Prototype: ', Person.prototype);
+Person.prototype.calcAge = function() {
+    console.log(2021 - this.birthYear);
+}
+
+olegas.calcAge()
+maram.calcAge()
+
+console.log(olegas.__proto__);
+console.log(Person.prototype);
+console.log(olegas.__proto__ === Person.prototype);
+
+console.log(Person.prototype.isPrototypeOf(olegas));
+console.log(Person.prototype.isPrototypeOf(Person));
+
+// Person.prototype isnt prototype of objects created with it, its storage that will be used for all linked Object 
+
+Person.prototype.species = 'Homo Sapiens'
+console.log('Olegas specie: ',olegas.species, '\nMaram specie: ', maram.species)
+
+// We can in the same way add methods to in built objects like Array?
+Array.prototype.unique = function () {
+    return [...new Set(this)]
+}
+const arr = ['duplicate', 'duplicate', 2, 2, 2, 1]
+console.log(arr.unique());
+
