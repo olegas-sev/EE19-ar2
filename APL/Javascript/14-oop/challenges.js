@@ -11,7 +11,7 @@ DATA CAR 2: 'Mercedes' going at 95 km/h
 GOOD LUCK 😀
 */
 
-
+/*
 const Car = function (make, speed) {
     this.make = make
     this.speed = speed
@@ -34,3 +34,4 @@ bmw.accelerate()
 bmw.accelerate()
 bmw.brake()
 console.log(bmw);
+*/

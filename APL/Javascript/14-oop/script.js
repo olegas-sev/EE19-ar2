@@ -18,19 +18,18 @@
 ////////////////////////
 // Constructor functions
 //
-const Person = function(firstName, birthYear) {
+/*
+const Person = function(fullName, birthYear) {
     // Checking if step 3 is true
     console.log('this', this);
-    this.name = firstName
+    this.name = fullName
     this.birthYear = birthYear
 
-    /*
     // Very bad practise, the function will be created on each new instance
     // instead we want it to inherit a function from a parent
-    this.calcAge = function() {
-        console.log(this.name);
-    }
-    */
+    // this.calcAge = function() {
+    //    console.log(this.name);
+    // }
 }
 
 const olegas = new Person('Olegas', 2003)
@@ -72,4 +71,73 @@ Array.prototype.unique = function () {
 }
 const arr = ['duplicate', 'duplicate', 2, 2, 2, 1]
 console.log(arr.unique());
+*/
 
+////////////////////////
+// Constructor functions
+// ES6 Classes
+//
+
+// Class expression
+// const PersonCl = class {}
+
+// Class declaration
+class PersonCl {
+    constructor(fullName, birthYear) {
+        this.fullName = fullName
+        this.birthYear = birthYear
+    }
+    // Methods will be added to PersonCl.prototype 
+    calcAge() {
+        console.log(this.fullName, 'is', 2021 - this.birthYear);
+    }
+    greet() {
+        console.log(`Hey ${this.fullName}`);
+    }
+    get age() {
+        return 2021 - this.birthYear
+    }
+    set fullName(name) {
+        if (name.includes(' ')) this._fullName = name
+        else alert(`${name} not a full name`)
+    }
+    get fullName() {
+        return this._fullName
+    }
+}
+
+const maram = new PersonCl('Maram AlSth', 1997)
+maram.calcAge()
+console.log(maram);
+
+console.log(maram.__proto__ === PersonCl.prototype);
+
+// PersonCl.prototype.greet = function() {
+//     console.log(`Hey ${this.fullName}`);
+// }
+
+maram.greet()
+
+// 1. Classes are not hoisted
+// 2. Classes are first-class citizes
+// 3. Classes are executed in strict mode
+
+const walter = new PersonCl('Walter Smith', 1965)
+
+////////////////////////
+// Getters & Setters
+// 
+const account = {
+    owner: 'olegas',
+    movements: [120, 110, -5, 10, 25],
+    get latest() {
+        return this.movements.slice(-1).pop()
+    },
+    set latest(mov) {
+        this.movements.push(mov)
+    }
+    
+}
+console.log(account.latest);
+account.latest = 50
+console.log(account.latest);
