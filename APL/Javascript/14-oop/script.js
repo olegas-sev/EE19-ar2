@@ -150,7 +150,7 @@ account.latest = 50
 console.log(account.latest);
 */
 
-
+/*
 ////////////////////////
 // Constructor functions
 // Object.create()
@@ -174,3 +174,41 @@ console.log(steven.__proto__ == PersonProto);
 const sarah = Object.create(PersonProto)
 sarah.init('Sarah', 1998)
 sarah.calcAge()
+*/
+
+////////////////////////
+// Constructor functions
+// Inheritance between "Classes"
+//
+const Person = function(firstName, birthYear) {
+    this.firstName = firstName
+    this.birthYear = birthYear
+}
+
+Person.prototype.calcAge = function() {
+    console.log(`Your age is ${2021 - this.birthYear}`);
+}
+
+const Student = function(firstName, birthYear, course) {
+    Person.call(this, firstName, birthYear)
+    this.course = course
+}
+
+// Make sure making a copy BEFORE u make any methods otherwise they will be obviously overwritten
+Student.prototype = Object.create(Person.prototype)
+
+Student.prototype.introduce = function() {
+    console.log(`Hi my name is ${this.firstName} and I'm currently studying ${this.course}.`);
+}
+
+const mike = new Student('Mike', 2013, 'Computer Science')
+mike.introduce()
+mike.calcAge()
+
+console.log(mike);
+console.log(mike instanceof Student);
+console.log(mike instanceof Person);
+console.log(mike instanceof Object);
+
+Student.prototype.constructor = Student
+console.dir(Student.prototype.constructor)
