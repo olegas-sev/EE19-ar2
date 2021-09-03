@@ -73,6 +73,7 @@ const arr = ['duplicate', 'duplicate', 2, 2, 2, 1]
 console.log(arr.unique());
 */
 
+/*
 ////////////////////////
 // Constructor functions
 // ES6 Classes
@@ -82,6 +83,7 @@ console.log(arr.unique());
 // const PersonCl = class {}
 
 // Class declaration
+
 class PersonCl {
     constructor(fullName, birthYear) {
         this.fullName = fullName
@@ -103,6 +105,11 @@ class PersonCl {
     }
     get fullName() {
         return this._fullName
+    }
+    // Static
+    static hey() {
+        console.log('Hey there 👋');
+        console.log(this);
     }
 }
 
@@ -141,3 +148,29 @@ const account = {
 console.log(account.latest);
 account.latest = 50
 console.log(account.latest);
+*/
+
+
+////////////////////////
+// Constructor functions
+// Object.create()
+//
+const PersonProto = {
+    calcAge() {
+        console.log(`${this.firstName}'s age is ${2021 - this.birthYear}`);
+    },
+    init(firstName, birthYear) {
+        this.firstName = firstName
+        this.birthYear = birthYear
+    }
+}
+const steven = Object.create(PersonProto) 
+console.log(steven);
+steven.name = "Steven"
+steven.birthYear = 2002;
+steven.calcAge()
+
+console.log(steven.__proto__ == PersonProto);
+const sarah = Object.create(PersonProto)
+sarah.init('Sarah', 1998)
+sarah.calcAge()
