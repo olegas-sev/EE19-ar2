@@ -136,12 +136,12 @@ const walter = new PersonCl('Walter Smith', 1965)
 // 
 const account = {
     owner: 'olegas',
-    movements: [120, 110, -5, 10, 25],
+    _movements: [120, 110, -5, 10, 25],
     get latest() {
-        return this.movements.slice(-1).pop()
+        return this._movements.slice(-1).pop()
     },
     set latest(mov) {
-        this.movements.push(mov)
+        this._movements.push(mov)
     }
     
 }
@@ -178,8 +178,9 @@ sarah.calcAge()
 
 ////////////////////////
 // Constructor functions
-// Inheritance between "Classes"
+// Inheritance between "Classes" Construction Functions
 //
+/*
 const Person = function(firstName, birthYear) {
     this.firstName = firstName
     this.birthYear = birthYear
@@ -212,3 +213,141 @@ console.log(mike instanceof Object);
 
 Student.prototype.constructor = Student
 console.dir(Student.prototype.constructor)
+*/
+
+////////////////////////
+// Constructor functions
+// Inheritance between "Classes" ES6 Classes
+//
+/*
+class PersonCl {
+    constructor(fullName, birthYear) {
+        this.fullName = fullName
+        this.birthYear = birthYear
+    }
+    // Methods will be added to PersonCl.prototype 
+    calcAge() {
+        console.log(this.fullName, 'is', 2021 - this.birthYear);
+    }
+    greet() {
+        console.log(`Hey ${this.fullName}`);
+    }
+    get age() {
+        return 2021 - this.birthYear
+    }
+    set fullName(name) {
+        if (name.includes(' ')) this._fullName = name
+        else alert(`${name} not a full name`)
+    }
+    get fullName() {
+        return this._fullName
+    }
+    // Static
+    static hey() {
+        console.log('Hey there 👋');
+        console.log(this);
+    }
+}
+
+class StudentCl extends PersonCl {
+    constructor(fullName, birthYear, course) {
+        // Needs to happen first
+        super(fullName, birthYear)
+        this.course = course;
+    }
+    introduce() {
+        console.log(`Hi my name is ${this.fullName} and I'm currently studying ${this.course}.`);
+    }
+    // Overwrite method
+    calcAge() {
+        console.log(`I will be ${2021 - this.birthYear + 5} in 5 years`);
+    }
+}
+
+const elsa = new StudentCl('Elsa Mako', 2002, 'Psychology')
+console.log(elsa);
+elsa.introduce()
+elsa.calcAge()
+*/
+
+////////////////////////
+// Constructor functions
+// Inheritance between "Classes" ES6 Classes
+//
+/*
+const PersonProto = {
+    calcAge() {
+        console.log(`${this.firstName}'s age is ${2021 - this.birthYear}`);
+    },
+    init(firstName, birthYear) {
+        this.firstName = firstName
+        this.birthYear = birthYear
+    }
+}
+const steven = Object.create(PersonProto)
+const StudentProto = Object.create(PersonProto)
+
+StudentProto.init = function (firstName, birthYear, course) {
+    PersonProto.init.call(this, firstName, birthYear)
+    this.course = course
+}
+StudentProto.introduce = function () {
+    console.log(`Hi my name is ${this.firstName} and I'm currently studying ${this.course}.`);
+}
+const jay = Object.create(StudentProto)
+
+jay.init('Jay', 2010, 'Computer Science')
+jay.introduce()
+jay.calcAge()
+*/
+
+// 1) Public fields
+// 2) Private fields
+// 3) Public methods
+// 4) Private methods
+
+class Account {
+    // 1) Public fields (instances)
+    locale = navigator.language;
+    _movements = [];
+    // 2) Private fields 
+    
+    constructor(owner, currency, pin) {
+        this.owner = owner
+        this.currency = currency
+        this._pin = pin
+        // Protected prop
+        // this._movements = []
+        // this.locale = navigator.language
+    }
+    getMovements() {
+        return this._movements
+    }
+
+    deposit(val) {
+        this._movements.push(val)
+    }
+    withdraw(val) {
+        this.deposit(-val)
+    }
+    _approveLoan(val) {
+        return true
+    }
+    requestLoan(val) {
+        if (this._approveLoan(val)) {
+            this.deposit(val)
+            console.log('Loan approved!');
+        } else {
+            console.log('Error happened while requesting a loan');
+        }
+    }
+}
+
+const acc1 = new Account('Olegas', 'SEK', 1111)
+acc1.deposit(2000)
+acc1.withdraw(500)
+acc1.requestLoan(1000)
+acc1.approveLoan(200)
+console.log(acc1);
+console.log(acc1.getMovements());
+
