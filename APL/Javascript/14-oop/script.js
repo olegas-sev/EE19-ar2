@@ -136,12 +136,12 @@ const walter = new PersonCl('Walter Smith', 1965)
 // 
 const account = {
     owner: 'olegas',
-    _movements: [120, 110, -5, 10, 25],
+    #movements: [120, 110, -5, 10, 25],
     get latest() {
-        return this._movements.slice(-1).pop()
+        return this.#movements.slice(-1).pop()
     },
     set latest(mov) {
-        this._movements.push(mov)
+        this.#movements.push(mov)
     }
     
 }
@@ -272,7 +272,7 @@ elsa.calcAge()
 
 ////////////////////////
 // Constructor functions
-// Inheritance between "Classes" ES6 Classes
+// Inheritance between "Classes" ES6 Object create
 //
 /*
 const PersonProto = {
@@ -305,30 +305,37 @@ jay.calcAge()
 // 2) Private fields
 // 3) Public methods
 // 4) Private methods
+// there is also static
 
 class Account {
     // 1) Public fields (instances)
     locale = navigator.language;
-    _movements = [];
-    // 2) Private fields 
-    
+    // 2) Private fields (instances)
+    #movements = [];
+    #pin;
+
+
     constructor(owner, currency, pin) {
         this.owner = owner
         this.currency = currency
-        this._pin = pin
+        this.#pin = pin
         // Protected prop
-        // this._movements = []
+        // this.#movements = []
         // this.locale = navigator.language
     }
+    // 3) Public methods (proto)
+    // API
     getMovements() {
-        return this._movements
+        return this.#movements
     }
 
     deposit(val) {
-        this._movements.push(val)
+        this.#movements.push(val)
+        return this;
     }
     withdraw(val) {
         this.deposit(-val)
+        return this;
     }
     _approveLoan(val) {
         return true
@@ -336,18 +343,28 @@ class Account {
     requestLoan(val) {
         if (this._approveLoan(val)) {
             this.deposit(val)
-            console.log('Loan approved!');
+            console.log(`Loan approved! (${val})`);
         } else {
             console.log('Error happened while requesting a loan');
         }
+        return this;
     }
+    // 3) Private methods (proto)
+    // #approveLoan(val) {
+    //     return true
+    // }
 }
 
 const acc1 = new Account('Olegas', 'SEK', 1111)
 acc1.deposit(2000)
 acc1.withdraw(500)
 acc1.requestLoan(1000)
-acc1.approveLoan(200)
+// acc1._approveLoan(200)
 console.log(acc1);
 console.log(acc1.getMovements());
 
+// console.log(acc1.#movements);
+
+// Chaining methods
+
+acc1.deposit(2500).withdraw(300).withdraw(200).requestLoan(5000).deposit(140)
